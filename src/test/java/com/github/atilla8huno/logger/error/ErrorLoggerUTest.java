@@ -1,13 +1,12 @@
 package com.github.atilla8huno.logger.error;
 
+import com.github.atilla8huno.logger.TestableLoggerImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.slf4j.Logger;
 
-import java.util.logging.Logger;
-
-import static java.util.logging.Level.SEVERE;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -23,7 +22,7 @@ class ErrorLoggerUTest {
     @BeforeEach
     void setUp() {
         logger = mock(Logger.class);
-        underTest = new ErrorLoggerImpl(logger);
+        underTest = new TestableLoggerImpl(logger);
     }
 
     @Test
@@ -36,7 +35,7 @@ class ErrorLoggerUTest {
         underTest.error(message, null);
 
         //then
-        verify(logger).log(eq(SEVERE), eq(message), isNull(Throwable.class));
+        verify(logger).error(eq(message), isNull(Throwable.class));
     }
 
     @Test
@@ -50,7 +49,7 @@ class ErrorLoggerUTest {
         underTest.error(message, thrown);
 
         //then
-        verify(logger).log(eq(SEVERE), eq(message), eq(thrown));
+        verify(logger).error(eq(message), eq(thrown));
     }
 
     @Test

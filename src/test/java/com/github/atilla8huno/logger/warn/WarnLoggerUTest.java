@@ -1,16 +1,17 @@
 package com.github.atilla8huno.logger.warn;
 
+import com.github.atilla8huno.logger.TestableLoggerImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -24,7 +25,7 @@ class WarnLoggerUTest {
     @BeforeEach
     void setUp() {
         logger = mock(Logger.class);
-        underTest = new WarnLoggerImpl(logger);
+        underTest = new TestableLoggerImpl(logger);
     }
 
     @Test
@@ -34,10 +35,10 @@ class WarnLoggerUTest {
         String message = "This is a useful message";
 
         //when
-        underTest.warning(message);
+        underTest.warn(message);
 
         //then
-        verify(logger).warning(eq(message));
+        verify(logger).warn(eq(message), any(Object[].class));
     }
 
     @Test
@@ -49,10 +50,10 @@ class WarnLoggerUTest {
         List<String> param2 = new ArrayList<>();
 
         //when
-        underTest.warning(message, param1, param2);
+        underTest.warn(message, param1, param2);
 
         //then
-        verify(logger).warning(eq(format(message, param1, param2)));
+        verify(logger).warn(eq(message), (Object[]) any());
     }
 
     @Test
@@ -62,7 +63,7 @@ class WarnLoggerUTest {
         String message = null;
 
         //when
-        Executable Warn = () -> underTest.warning(message);
+        Executable Warn = () -> underTest.warn(message);
 
         //then
         assertThrows(IllegalArgumentException.class, Warn);

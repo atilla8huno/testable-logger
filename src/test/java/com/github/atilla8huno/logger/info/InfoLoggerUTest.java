@@ -1,16 +1,17 @@
 package com.github.atilla8huno.logger.info;
 
+import com.github.atilla8huno.logger.TestableLoggerImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -24,7 +25,7 @@ class InfoLoggerUTest {
     @BeforeEach
     void setUp() {
         logger = mock(Logger.class);
-        underTest = new InfoLoggerImpl(logger);
+        underTest = new TestableLoggerImpl(logger);
     }
 
     @Test
@@ -37,7 +38,7 @@ class InfoLoggerUTest {
         underTest.info(message);
 
         //then
-        verify(logger).info(eq(message));
+        verify(logger).info(eq(message), any(Object[].class));
     }
 
     @Test
@@ -52,7 +53,7 @@ class InfoLoggerUTest {
         underTest.info(message, param1, param2);
 
         //then
-        verify(logger).info(eq(format(message, param1, param2)));
+        verify(logger).info(eq(message), (Object[]) any());
     }
 
     @Test
