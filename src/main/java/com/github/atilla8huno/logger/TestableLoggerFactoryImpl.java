@@ -1,9 +1,9 @@
 package com.github.atilla8huno.logger;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @AllArgsConstructor
 public class TestableLoggerFactoryImpl implements TestableLoggerFactory {
 
