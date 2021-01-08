@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class LoggerFactoryImpl implements LoggerFactory {
+public class TestableLoggerFactoryImpl implements TestableLoggerFactory {
 
     @Override
     public <T> TestableLogger getLogger(Class<T> clazz) {

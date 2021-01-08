@@ -10,24 +10,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
 
-@DisplayName("Test suite of the class: LoggerFactory")
-public class LoggerFactoryUTest {
+@DisplayName("Test suite of the class: TestableLoggerFactory")
+public class TestableLoggerFactoryUTest {
 
-    private LoggerFactory underTest;
-    private Logger logger;
+    private TestableLoggerFactory underTest;
+    MockedStatic<org.slf4j.LoggerFactory> loggerFactory;
 
     @BeforeEach
     void setUp() {
-        logger = mock(Logger.class);
+        Logger logger = mock(Logger.class);
 
-        MockedStatic<org.slf4j.LoggerFactory> loggerFactory =
-                mockStatic(org.slf4j.LoggerFactory.class);
+        loggerFactory = mockStatic(org.slf4j.LoggerFactory.class);
         loggerFactory
                 .when(() -> org.slf4j.LoggerFactory.getLogger(any(Class.class)))
                 .thenReturn(logger);
 
-        underTest = new LoggerFactoryImpl();
+        underTest = new TestableLoggerFactoryImpl();
     }
 
     @Test
@@ -40,5 +40,7 @@ public class LoggerFactoryUTest {
 
         //then
         assertNotNull(logger);
+        loggerFactory.verify(times(1),
+                () -> org.slf4j.LoggerFactory.getLogger(clazz));
     }
 }
