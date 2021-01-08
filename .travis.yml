@@ -1,8 +1,8 @@
 language: java
-jdk: openjdk8
+jdk: oraclejdk8
 before_script:
   - chmod +x mvnw
 install: true
 script:
-  - ./mvnw clean install
+  - ./mvnw clean verify
   - bash <(curl -s https://codecov.io/bash)
